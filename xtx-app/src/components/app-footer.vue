@@ -1,6 +1,7 @@
 <template>
   <footer class="app-footer">
     <!-- 联系我们 -->
+    <!-- 底部部分 -->
     <div class="contact">
       <div class="container">
         <dl>

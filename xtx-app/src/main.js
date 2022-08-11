@@ -4,5 +4,6 @@ import router from './router'
 import store from './store'
 import 'normalize.css'
 import '@/assets/styles/common.less'
-
-createApp(App).use(store).use(router).mount('#app')
+// 注册全局组件
+import ui from '@/components/library/index.js'
+createApp(App).use(store).use(router).use(ui).mount('#app')

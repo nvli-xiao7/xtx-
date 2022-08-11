@@ -1,0 +1,12 @@
+错误npm ERR! Cannot read properties of null (reading 'pickAlgorithm')
+解决方法：
+在终端中运行命令：
+npm cache clear --force
+然后重新运行 npm i 命令，再次安装
+
+组件数据的懒加载
+大致步骤：
+理解 useIntersectionObserver 的使用，各个参数的含义
+改造 home-new 组件成为数据懒加载，掌握 useIntersectionObserver 函数的用法
+封装 useLazyData 函数，作为数据懒加载公用函数
+把 home-new 和 home-hot 改造成懒加载方式

@@ -1,9 +1,11 @@
 import axios from 'axios'
 import store from '@/store'
 import router from '@/router' // 引入路由实例
+// 导出基准地址，原因：其他地方不是通过axios发请求的地方用上基准地址
+export const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net'
 const instance = axios.create({
-  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net/',
-  timeout: 5000
+  baseURL
+  // timeout: 5000
 })
 instance.interceptors.request.use(config => {
   // 拦截业务逻辑
@@ -21,7 +23,9 @@ instance.interceptors.request.use(config => {
   return Promise.reject(err)
 })
 // 响应拦截器
+// res => res.data  取出data数据，将来调用接口的时候直接拿到的就是后台的数据
 instance.interceptors.response.use(res => res.data, err => {
+  // 401 状态码，进入该函数
   if (err.response && err.response.status === 401) {
     // 1. 清空无效用户信息
     // 2. 跳转到登录页
