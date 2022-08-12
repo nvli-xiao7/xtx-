@@ -30,3 +30,17 @@ export const findHot = () => {
     method: 'GET'
   })
 }
+// 产品区块
+export const findGoods = () => {
+  return request({
+    url: '/home/goods',
+    method: 'GET'
+  })
+}
+// 最新专题
+export const findSpecial = () => {
+  return request({
+    url: '/home/special',
+    method: 'GET'
+  })
+}

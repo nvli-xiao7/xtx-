@@ -4,9 +4,72 @@
 npm cache clear --force
 然后重新运行 npm i 命令，再次安装
 
+npm 下载包不成功后面加--legacy-peer-deps
+https://www.bbsmax.com/topic/css%E8%AE%A9%E6%96%87%E5%AD%97%E5%9C%A8%E4%B8%80%E8%A1%8C%E5%86%85%E6%98%BE%E7%A4%BA/
+
 组件数据的懒加载
 大致步骤：
 理解 useIntersectionObserver 的使用，各个参数的含义
 改造 home-new 组件成为数据懒加载，掌握 useIntersectionObserver 函数的用法
 封装 useLazyData 函数，作为数据懒加载公用函数
 把 home-new 和 home-hot 改造成懒加载方式
+下载@vueuse/core包
+传入api函数，和ref定义的dom元素
+export const useLazyData = (apiFn, target) => {
+  // 需要
+  // 1. 被观察的对象
+  // 2. 不同的API函数
+  const result = ref([])
+  const { stop } = useIntersectionObserver(
+    target, // dom对象
+    ([{ isIntersecting }], observerElement) => {
+      if (isIntersecting) { // 判断是否进入可视区域
+        stop()
+        apiFn().then((data) => {
+          result.value = data.result
+        })
+      }
+    }
+  )
+  return { result }
+}
+
+图片懒加载
+// 创建观察对象实例
+const observer = new IntersectionObserver(callback[, options])
+// callback 被观察dom进入可视区离开可视区都会触发
+// - 两个回调参数 entries , observer
+// - entries 被观察的元素信息对象的数组 [{元素信息},{}]，信息中isIntersecting判断进入或离开
+// - observer 就是观察实例
+// options 配置参数
+// - 三个配置属性 root rootMargin threshold
+// - root 基于的滚动容器，默认是document
+// - rootMargin 容器有没有外边距
+// - threshold 交叉的比例
+
+// 实例提供两个方法
+// observe(dom) 观察哪个dom
+// unobserve(dom) 停止观察那个dom
+
+// 自定义属性
+const defineDirective = (app) => {
+  app.directive('lazyLoad', {
+    // 生命周期创建
+    mounted (el, binding) {
+      // 调用函数
+      const observer = new IntersectionObserver(([{ isIntersecting }]) => {
+        // 判断进入可视区域
+        if (isIntersecting) {
+          observer.unobserve(el)
+          el.onerror = () => {
+            el.src = defaultImg
+          }
+          el.src = binding.value
+        }
+      }, {
+        threshold: 0.01
+      })
+      observer.observe(el)
+    }
+  })
+}
