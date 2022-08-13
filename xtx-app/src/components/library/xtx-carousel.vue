@@ -15,7 +15,10 @@
       </li>
     </ul>
     <!-- 左右点击事件按钮 -->
-    <a href="javascript:;" class="carousel-btn prev" @click="prev"><i class="iconfont icon-angle-left"></i></a>
+    <a href="javascript:;"
+    :class="isShow?'carousel-btn prev':'carousel-btn add'"
+    @click="prev"
+    ><i class="iconfont icon-angle-left"></i></a>
     <a href="javascript:;" class="carousel-btn next" @click="next"><i class="iconfont icon-angle-right"></i></a>
     <div class="carousel-indicator">
        <span v-for="(item,i) in bannerList" :key="i" :class="{active:index===i}" @click="toggle(i)"></span>
@@ -33,6 +36,10 @@ export default {
       default: () => []
     },
     autoPlay: {
+      type: Boolean,
+      default: false
+    },
+    isShow: {
       type: Boolean,
       default: false
     }
@@ -161,6 +168,9 @@ export default {
       opacity: 0;
       transition: all 0.5s;
       &.prev{
+        left: 20px;
+      }
+      &.add{
         left: 250px;
       }
       &.next{

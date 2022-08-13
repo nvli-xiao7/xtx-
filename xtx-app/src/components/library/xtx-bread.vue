@@ -1,16 +1,7 @@
 <template>
+<!-- 二级路由商品 -->
   <div class='xtx-bread'>
-    <div class="xtx-bread-item">
-      <RouterLink to="/">首页</RouterLink>
-    </div>
-    <i class="iconfont icon-angle-right"></i>
-    <div class="xtx-bread-item">
-      <RouterLink to="/category/10000">电器</RouterLink>
-    </div>
-    <i class="iconfont icon-angle-right"></i>
-    <div class="xtx-bread-item">
-      <span>空调</span>
-    </div>
+    <slot />
   </div>
 </template>
 
@@ -19,8 +10,8 @@ export default {
   name: 'XtxBread'
 }
 </script>
-
-<style scoped lang='less'>
+<!-- 去掉scoped全局作用 -->
+<style lang='less' scoped>
 .xtx-bread{
   display: flex;
   padding: 25px 10px;
@@ -39,5 +30,4 @@ export default {
     margin-right: 5px;
     line-height: 22px;
   }
-}
-</style>
+}</style>

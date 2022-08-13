@@ -73,3 +73,9 @@ const defineDirective = (app) => {
     }
   })
 }
+
+每次切换路线的时间滚动到顶部
+src/router/index.js
++  scrollBehavior () {
++    return { left: 0, top: 0 }
++  }

@@ -33,7 +33,6 @@ export default {
       res.result.forEach(item => {
         item.open = false
       })
-      // console.log(res.result)
       commit('setList', res.result)
     }
   }

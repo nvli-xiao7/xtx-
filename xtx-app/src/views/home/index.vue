@@ -6,7 +6,7 @@
         <!-- 左侧分类 -->
         <HomeCategory />
         <!-- 轮播图组件 -->
-        <HomeBanner></HomeBanner>
+        <HomeBanner :isShow='true'></HomeBanner>
         <!-- 新鲜好物组件 -->
         <HomeNew></HomeNew>
         <!-- 人气推荐 -->

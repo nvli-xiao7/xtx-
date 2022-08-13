@@ -2,6 +2,9 @@
 import XtxSkeleton from './xtx-skeleton.vue'// 高亮
 import XtxCarousel from './xtx-carousel.vue'// 轮播图
 import XtxMore from './xtx-more.vue'// 标题组件
+import XtxCheckbox from './xtx-checkbox.vue'// 复选框
+import XtxBreadItem from './xtx-bread-item.vue'// 二级商品页面
+import XtxInfiniteLoading from './xtx-infinite-loading.vue'// 懒加载样式，数据
 import defaultImg from '@/assets/images/200.png'// 导入懒加载图片样式
 // 自定义属性
 const defineDirective = (app) => {
@@ -30,6 +33,9 @@ export default {
     app.component(XtxSkeleton.name, XtxSkeleton)
     app.component(XtxCarousel.name, XtxCarousel)
     app.component(XtxMore.name, XtxMore)
+    app.component(XtxBreadItem.name, XtxBreadItem)
+    app.component(XtxCheckbox.name, XtxCheckbox)
+    app.component(XtxInfiniteLoading.name, XtxInfiniteLoading)
     defineDirective(app)
   }
 }
