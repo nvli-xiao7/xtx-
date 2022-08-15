@@ -3,6 +3,7 @@ const Layout = () => import(/* webpackChunkName: "about" */ '@/views/Layout.vue'
 const Home = () => import(/* webpackChunkName: "about" */ '@/views/home/index.vue')
 const TopCategory = () => import(/* webpackChunkName: "about" */ '@/views/category/index.vue')
 const SubCategory = () => import(/* webpackChunkName: "about" */ '@/views/category/sub.vue')
+const Goods = () => import(/* webpackChunkName: "about" */ '@/views/goods/index.vue')
 const routes = [
   {
     path: '/',
@@ -11,7 +12,8 @@ const routes = [
     children: [
       { path: '/', name: 'Home', component: Home },
       { path: '/category/:id', component: TopCategory },
-      { path: '/category/sub/:id', component: SubCategory }
+      { path: '/category/sub/:id', component: SubCategory },
+      { path: '/product/:id', component: Goods }
     ]
   }
 ]

@@ -13,8 +13,8 @@
       </a>
     </div>
     <div class="check">
-      <XtxCheckbox v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
-      <XtxCheckbox v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
+      <XtxCheckbox v-model="sortParams.inventory" @change="changeCheck">仅显示有货商品</XtxCheckbox>
+      <XtxCheckbox v-model="sortParams.onlyDiscount" @change="changeCheck">仅显示特惠商品</XtxCheckbox>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@
 import { reactive } from 'vue'
 export default {
   name: 'SubSort',
-  setup () {
+  setup (props, { emit }) {
     const sortParams = reactive({
       inventory: false, // 是否有库存
       onlyDiscount: false, // 只显示特惠
@@ -31,7 +31,6 @@ export default {
     })
     // 定义方法判断点击事件
     const changeSort = (sortField) => {
-      console.log(sortField)
       // 判断如果是排序进行判断
       if (sortField === 'price') {
         sortParams.sortField = sortField
@@ -50,9 +49,13 @@ export default {
         // 将排序重置null
         sortParams.sortMethod = null
       }
+      emit('sort-change', sortParams)
+    }
+    const changeCheck = (sortField) => {
+      emit('sort-change', sortParams)
     }
 
-    return { sortParams, changeSort }
+    return { sortParams, changeSort, changeCheck }
   }
 }
 </script>

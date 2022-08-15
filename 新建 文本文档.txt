@@ -79,3 +79,34 @@ src/router/index.js
 +  scrollBehavior () {
 +    return { left: 0, top: 0 }
 +  }
+
+图片放大
+dom容器
+ const target = ref(null)
+    // 拿到容器的坐标值
+    const { elementX, elementY, isOutside } = useMouseInElement(target)
+    // 监听坐标变化
+    // elementX 鼠标基于容器左上角X轴偏移
+    // elementY 鼠标基于容器左上角Y轴偏移
+    // isOutside 鼠标是否在模板容器外
+    const layerPosition = reactive({ left: 0, top: 0 })
+    const BgPosition = reactive({ backgroundPositionX: 0, backgroundPositionY: 0 })
+    watch([elementX, elementY, isOutside], () => {
+      show.value = !isOutside.value
+      const position = { x: 0, y: 0 }
+      // 给x定义0~200之间滑动
+      if (elementX.value < 100) position.x = 0
+      else if (elementX.value > 300) position.x = 200
+      else position.x = elementX.value - 100
+      // 给y定义0~200之间滑动
+
+      if (elementY.value < 100) position.y = 0
+      else if (elementY.value > 300) position.y = 200
+      // 如果没有这个，则坐标不会滑动
+      else position.y = elementY.value - 100
+      // 给样式赋值
+      layerPosition.left = position.x + 'px'
+      layerPosition.top = position.y + 'px'
+      BgPosition.backgroundPositionX = -2 * position.x + 'px'
+      BgPosition.backgroundPositionY = -2 * position.y + 'px'
+    }, { immediate: true })

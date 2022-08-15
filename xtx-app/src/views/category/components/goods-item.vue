@@ -1,6 +1,6 @@
 <template>
 <!-- 二级路由商品组件 -->
-  <RouterLink to="/" class='goods-item'>
+  <RouterLink :to="`/product/${sub.id}`" class='goods-item'>
     <img :src="sub.picture" alt="">
     <p class="name ellipsis">{{sub.name}}</p>
     <p class="desc ellipsis">{{sub.desc}}</p>

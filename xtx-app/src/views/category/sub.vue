@@ -5,11 +5,11 @@
       <!-- 面包屑导航模块 -->
       <SubBread></SubBread>
       <!-- 选择区域 -->
-      <SubFilter></SubFilter>
+      <SubFilter @filter-change='filterChange'></SubFilter>
       <!-- 冠军类目-结果区-示例组件 -->
       <div class="goods-list">
         <!-- 排序 -->
-        <SubSort></SubSort>
+        <SubSort @sort-change='sortChange'></SubSort>
         <!-- 列表 -->
           <ul>
           <li v-for="sub in goodsData" :key="sub.id" >
@@ -50,7 +50,6 @@ export default {
         // 判断是否有数据
         if (data.result.items.length) { // 将数据拼接在一起
           goodsData.value = [...goodsData.value, ...data.result.items]
-          console.log(goodsData.value)
           // 页数加加
           reqParams.page++
         } else {
@@ -73,7 +72,28 @@ export default {
         finished.value = false
       }
     })
-    return { goodsData, loading, finished, Temporary }
+    // 选择区域复选框,将重新请求数据
+    const sortChange = (sortParams) => {
+      finished.value = false
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...sortParams }
+      reqParams.page = 1
+      goodsData.value = []
+      if (!sortParams.onlyDiscount) {
+        Temporary()
+      }
+    }
+    // 选择区域
+    // 将选择区域的拼接接收
+    const filterChange = (item) => {
+      // console.log(item)
+      finished.value = false
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...item }
+      reqParams.page = 1
+      goodsData.value = []
+    }
+    return { goodsData, loading, finished, Temporary, sortChange, filterChange }
   }
 }
 </script>
