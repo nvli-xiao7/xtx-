@@ -20,20 +20,32 @@
         <div class="spec">
           <!-- 详情发货地址 -->
           <GoodsName :goods="goods"></GoodsName>
+         <!-- 规格组件 -->
+          <GoodsSku :goods="goods"></GoodsSku>
+          <!-- 数量选择 -->
+          <XtxNumbox label="数量" v-model="num" :max='goods.inventory'></XtxNumbox>
+          <!-- 购物车 -->
+          <XtxButton style="margin-top:20px;" type="primary">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品推荐 -->
-      <GoodsRelevant />
+      <GoodsRelevant :goodsId="goods.id" />
       <!-- 商品详情 -->
       <div class="goods-footer">
         <div class="goods-article">
           <!-- 商品+评价 -->
+          <GoodsTabs :goods="goods"></GoodsTabs>
           <div class="goods-tabs"></div>
           <!-- 注意事项 -->
-          <div class="goods-warn"></div>
+          <div class="goods-warn">
+            <GoodsWarn></GoodsWarn>
+          </div>
         </div>
         <!-- 24热榜+专题推荐 -->
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+             <GoodsHot :goodsId="goods.id" :type="1" />
+             <GoodsHot :goodsId="goods.id" :type="2" />
+        </div>
       </div>
     </div>
   </div>
@@ -44,18 +56,27 @@ import GoodsRelevant from './components/goods-relevant'
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue'
 import GoodsName from './components/goods-name.vue'
+import GoodsSku from './components/goods-sku.vue'
+import XtxNumbox from '@/components/library/xtx-numbox.vue'
+import GoodsTabs from './components/goods-tabs.vue'
+import GoodsHot from './components/goods-hot.vue'
+import XtxButton from '@/components/library/Xtx-button.vue'
+import GoodsWarn from './components/goods-warn.vue'
 import { getGoods } from '@/api/product.js'
-import { watch, ref, nextTick } from 'vue'
+import { watch, ref, nextTick, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import XtxBread from '@/components/library/xtx-bread.vue'
 
 export default {
   name: 'XtxGoodsPage',
-  components: { GoodsRelevant, XtxBread, GoodsImage, GoodsName, GoodsSales },
+  components: { GoodsWarn, GoodsHot, GoodsRelevant, XtxBread, GoodsImage, GoodsName, GoodsSales, GoodsSku, XtxNumbox, XtxButton, GoodsTabs },
   setup () {
+    const num = ref(1)
     const goods = useGoods()
+    // 后代数据传递
+    provide('goods', goods)
     console.log(goods)
-    return { goods }
+    return { goods, num }
   }
 }
 // 获取商品详情

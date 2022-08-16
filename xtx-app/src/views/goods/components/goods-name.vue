@@ -13,7 +13,7 @@
     </dl>
     <dl>
       <dt>配送</dt>
-      <dd>至<XtxCity></XtxCity> </dd>
+      <dd>至<XtxCity :fullLocation='fullLocation' @change="change"></XtxCity></dd>
     </dl>
     <dl>
       <dt>服务</dt>
@@ -28,16 +28,44 @@
 </template>
 
 <script>
-import { XtxCity } from '@/components/library/xtx-city.vue'
+import XtxCity from '@/components/library/xtx-city.vue'
+import { ref } from 'vue'
 export default {
   name: 'GoodName',
+  components: { XtxCity },
   props: {
     goods: {
       type: Object,
       default: () => {}
     }
   },
-  components: { XtxCity }
+  setup (props) {
+    // 默认情况
+    const provinceCode = ref('110000')
+    const cityCode = ref('119900')
+    const countyCode = ref('110101')
+    const fullLocation = ref('北京市 市辖区 东城区')
+    // 判断数据是否有返回地址信息
+    // 将值赋值给地址
+    if (props.goods.userAddresses) {
+      const defaultAddr = ''
+      if (defaultAddr) {
+        provinceCode.value = defaultAddr.provinceCode
+        cityCode.value = defaultAddr.cityCode
+        countyCode.value = defaultAddr.countyCode
+        fullLocation.value = defaultAddr.fullLocation
+      }
+    }
+    // 子组件发送来的地址数据
+    const change = (changeResult) => {
+      provinceCode.value = changeResult.provinceCode
+      cityCode.value = changeResult.cityCode
+      countyCode.value = changeResult.countyCode
+      fullLocation.value = changeResult.fullLocation
+    }
+
+    return { fullLocation, change }
+  }
 }
 </script>
 
