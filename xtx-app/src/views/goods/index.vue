@@ -75,7 +75,6 @@ export default {
     const goods = useGoods()
     // 后代数据传递
     provide('goods', goods)
-    console.log(goods)
     return { goods, num }
   }
 }

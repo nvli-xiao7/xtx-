@@ -17,18 +17,44 @@
     </div>
     <div class="sort">
       <span>排序：</span>
-      <a href="javascript:;" class="active">默认</a>
-      <a href="javascript:;">最新</a>
-      <a href="javascript:;">最热</a>
+      <a href="javascript:;" @click="changeSort(null)" :class="{active:reqParams.sortField===null}">默认</a>
+      <a href="javascript:;" @click="changeSort('praiseCount')" :class="{active:reqParams.sortField==='praiseCount'}">最新</a>
+      <a href="javascript:;" @click="changeSort('createTime')" :class="{active:reqParams.sortField==='createTime'}">最热</a>
     </div>
-    <div class="list"></div>
+     <!-- 列表 -->
+    <div class="list">
+      <div class="item" v-for="item in commentList" :key="item.id">
+        <div class="user">
+          <img :src="item.member.avatar" alt="">
+          <span>{{item.member.nickname}}</span>
+        </div>
+        <div class="body">
+          <div class="score">
+            <i class="iconfont icon-wjx01" v-for="i in item.score" :key="i"></i>
+            <i class="iconfont icon-wjx02" v-for="i in 5-item.score" :key="i"></i>
+            <span class="attr" v-for="sub in item.orderInfo.specs" :key="sub.id">{{sub.name}}：{{sub.nameValue}}</span>
+          </div>
+          <div class="text">{{item.content}}</div>
+          <!-- 使用图片预览组件 -->
+          <GoodsCommentImage v-if="item.pictures.length" :pictures="item.pictures" />
+          <div class="time">
+            <span>{{item.createTime}}</span>
+            <span class="zan"><i class="iconfont icon-dianzan"></i>{{item.praiseCount}}</span>
+          </div>
+        </div>
+      </div>
+      <XtxPagination :total="total" :current-page="reqParams.page" @change-page="changePage"></XtxPagination>
+    </div>
   </div>
 </template>
 <script>
-import { findCommentInfoByGoods } from '@/api/goods.js'
-import { inject, ref } from 'vue'
+import { findCommentInfoByGoods, findEvaluate } from '@/api/goods.js'
+import XtxPagination from '@/components/library/xtx-pagination.vue'
+import { inject, ref, reactive, watch } from 'vue'
+import GoodsCommentImage from './goods-comment-image'
 export default {
   name: 'GoodsComment',
+  components: { GoodsCommentImage, XtxPagination },
   setup () {
     // 点击的索引
     const active = ref(0)
@@ -45,7 +71,34 @@ export default {
       data.result.tags.unshift({ title: '全部评价', tagCount: data.result.evaluateCount })
       evaluateList.value = data.result
     })
-    return { goods, evaluateList, active, changeTag }
+    // 获取评价信息
+    // 筛选条件准备
+    const commentList = ref([])
+    const reqParams = reactive({
+      page: 1,
+      pageSize: 10,
+      hasPicture: null,
+      tag: null,
+      sortField: null
+    })
+    // 排序的点击参数
+    const changeSort = (type) => {
+      reqParams.sortField = type
+      reqParams.page = 1
+    }
+    // 监听排序的变化发送请求数据
+    const total = ref(0)
+    watch(reqParams, (newValue) => {
+      findEvaluate(goods.value.id, reqParams).then(data => {
+        commentList.value = data.result.items
+        total.value = data.result.counts
+      })
+    }, { immediate: true })
+    // 子组件的页码数
+    const changePage = (i) => {
+      reqParams.page = i
+    }
+    return { goods, evaluateList, active, changeTag, reqParams, commentList, changeSort, total, changePage }
   }
 }
 </script>
@@ -100,7 +153,7 @@ export default {
           line-height: 40px;
           &:hover {
             border-color: @xtxColor;
-            background: lighten(@xtxColor,50%);
+            background: lighten(@xtxColor, 50%);
             color: @xtxColor;
           }
           &.active {
@@ -124,8 +177,54 @@ export default {
     }
     > a {
       margin-left: 30px;
-      &.active,&:hover {
+      &.active,
+      &:hover {
         color: @xtxColor;
+      }
+    }
+  }
+    .list {
+    padding: 0 20px;
+    .item {
+      display: flex;
+      padding: 25px 10px;
+      border-bottom: 1px solid #f5f5f5;
+      .user {
+        width: 160px;
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        span {
+          padding-left: 10px;
+          color: #666;
+        }
+      }
+      .body {
+        flex: 1;
+        .score {
+          line-height: 40px;
+          .iconfont {
+            color: #ff9240;
+            padding-right: 3px;
+          }
+          .attr {
+            padding-left: 10px;
+            color: #666;
+          }
+        }
+      }
+      .text {
+        color: #666;
+        line-height: 24px;
+      }
+      .time {
+        color: #999;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
       }
     }
   }

@@ -10,7 +10,7 @@
       </XtxBread>
 
       <!-- 轮播图组件 -->
-      <XtxCarousel :bannerList="bannerList" autoPlay style="height:500px"  isShow ></XtxCarousel>
+      <XtxCarousel :bannerList="bannerList" autoPlay style="height:500px"></XtxCarousel>
       <!-- 所有二级分类全部分类 -->
       <div class="sub-list">
         <h3>全部分类</h3>

@@ -1,7 +1,7 @@
 <template>
 <!-- 轮播图组件 -->
   <div class="home-banner">
-    <XtxCarousel :bannerList="bannerList" autoPlay/>
+    <XtxCarousel :bannerList="bannerList" autoPlay :isShow='true'/>
   </div>
 </template>
 <script>

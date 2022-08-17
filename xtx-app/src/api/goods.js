@@ -23,11 +23,21 @@ export const findHotGoods = ({ id, type, limit = 3 }) => {
 }
 
 /**
- * 商品的评价信息
+ * 商品的好评信息，6个框
  */
 export const findCommentInfoByGoods = (id) => {
   return request({
-    url: `/goods/${id}/evaluate`,
+    url: `https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate`,
     method: 'GET'
+  })
+}
+/**
+ * 商品的评价信息
+ */
+export const findEvaluate = (id, { ...reqParams }) => {
+  return request({
+    url: `https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate/page`,
+    method: 'GET',
+    params: { reqParams }
   })
 }

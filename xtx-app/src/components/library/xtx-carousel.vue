@@ -23,7 +23,7 @@
       <!-- 左右点击事件按钮 -->
       <a
         href="javascript:;"
-        :class="isShow ? 'carousel-btn prev' : 'carousel-btn add'"
+        :class="isShow?'carousel-btn prev': 'carousel-btn add'"
         @click="prev"
         ><i class="iconfont icon-angle-left"></i
       ></a>
@@ -82,8 +82,7 @@ export default {
       }, props.times)
     }
     // 监听数据
-    watch(
-      () => props.bannerList,
+    watch(() => props.bannerList,
       (newValue) => {
         // 判断数据和值为真，调用方法
         if (newValue.length && props.autoPlay) {
@@ -194,6 +193,9 @@ export default {
       opacity: 0;
       transition: all 0.5s;
       &.prev{
+        left: 250px;
+      }
+      &.add{
         left: 20px;
       }
       &.next{

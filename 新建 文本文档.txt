@@ -4,6 +4,9 @@
 npm cache clear --force
 然后重新运行 npm i 命令，再次安装
 
+错误TypeError: Cannot convert undefined or null to object
+npm config set registry http://registry.npmjs.org/
+
 npm 下载包不成功后面加--legacy-peer-deps
 https://www.bbsmax.com/topic/css%E8%AE%A9%E6%96%87%E5%AD%97%E5%9C%A8%E4%B8%80%E8%A1%8C%E5%86%85%E6%98%BE%E7%A4%BA/
 

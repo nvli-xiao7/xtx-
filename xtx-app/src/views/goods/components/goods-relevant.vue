@@ -6,7 +6,7 @@
       <span class="title">{{goodsId?'同类商品推荐':'猜你喜欢'}}</span>
     </div>
     <!-- 此处使用改造后的xtx-carousel.vue -->
-    <XtxCarousel :bannerList='bannerList' style="height:380px" :autoPlay='false'></XtxCarousel>
+    <XtxCarousel :bannerList='bannerList' style="height:380px"></XtxCarousel>
   </div>
 </template>
 

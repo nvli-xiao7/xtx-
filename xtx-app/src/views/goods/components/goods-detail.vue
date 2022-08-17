@@ -1,6 +1,6 @@
 <template>
   <div class="goods-detail">
-    <!-- 属性 -->
+    <!-- 详情图片属性 -->
     <ul class="attrs">
       <li v-for="item in goods.details.properties" :key="item.value">
         <span class="dt">{{item.name}}</span>
