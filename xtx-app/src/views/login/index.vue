@@ -21,6 +21,8 @@
 import LoginHeader from './components/login-header.vue'
 import LoginFooter from './components/login-footer.vue'
 import LoginForm from './components/login-form.vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 export default {
   name: 'LogiN',
@@ -28,6 +30,10 @@ export default {
   setup () {
     // 登录方式切换
     const activeName = ref('active')
+    // 存储回调地址，提供将来QQ回调页使用  setup中
+    const store = useStore()
+    const route = useRoute()
+    store.commit('user/setRedirectUrl', route.query.redirectUrl)
     return { activeName }
   }
 }

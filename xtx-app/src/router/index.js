@@ -5,6 +5,7 @@ const TopCategory = () => import(/* webpackChunkName: "about" */ '@/views/catego
 const SubCategory = () => import(/* webpackChunkName: "about" */ '@/views/category/sub.vue')
 const Goods = () => import(/* webpackChunkName: "about" */ '@/views/goods/index.vue')
 const Login = () => import(/* webpackChunkName: "about" */ '@/views/login/index.vue')
+const Callback = () => import(/* webpackChunkName: "about" */ '@/views/login/callback.vue')
 const routes = [
   {
     path: '/',
@@ -17,7 +18,8 @@ const routes = [
       { path: '/product/:id', component: Goods }
     ]
   },
-  { path: '/login', component: Login }
+  { path: '/login', component: Login },
+  { path: '/login/callback', component: Callback }
 ]
 
 const router = createRouter({
