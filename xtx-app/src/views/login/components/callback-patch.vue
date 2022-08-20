@@ -57,7 +57,7 @@ import { reactive, onUnmounted, ref } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
 import Message from '@/components/library/Message'
 import schema from '@/utils/vee-validate-schema.js'
-import { userComplement, userMobileLoginMsg } from '@/api/user.js'
+import { userComplement, userRegisterCode } from '@/api/user.js'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 export default {
@@ -91,8 +91,9 @@ export default {
       const valid = mySchema.mobile(form.mobile)
       if (valid === true) {
         if (time.value <= 0) {
-          userMobileLoginMsg({ ...form })
+          userRegisterCode({ ...form })
             .then((data) => {
+              console.log(data)
               Message({ type: 'success', text: '验证码发送成功' })
               time.value = 60
               resume()

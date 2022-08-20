@@ -96,3 +96,15 @@ export const userCheckAccount = (account) => {
     params: { account }
   })
 }
+/**
+ *
+ * @param {注册手机验证码} account
+ * @returns
+ */
+export const userRegisterCode = ({ mobile }) => {
+  return request({
+    url: '/register/code',
+    method: 'GET',
+    params: { mobile }
+  })
+}

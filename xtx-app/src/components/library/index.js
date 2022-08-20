@@ -8,6 +8,9 @@ import XtxInfiniteLoading from './xtx-infinite-loading.vue'// 懒加载样式，
 import defaultImg from '@/assets/images/200.png'// 导入懒加载图片样式
 import xtxMessage from '@/components/library/xtx-message.vue'// 登录成功的样式
 import Message from './Message'
+// import Confirm from './Confirm'
+// import xtxConfirm from '@/components/library/xtx-confirm.vue'
+
 // 自定义属性
 const defineDirective = (app) => {
   app.directive('lazyLoad', {
@@ -39,8 +42,10 @@ export default {
     app.component(XtxCheckbox.name, XtxCheckbox)
     app.component(XtxInfiniteLoading.name, XtxInfiniteLoading)
     app.component(xtxMessage.name, xtxMessage)
+    // app.component(xtxConfirm.name, xtxConfirm)
     defineDirective(app)
     // 如果你想挂载全局的属性，能够通过组件实例调用的属性   this.$message
     app.config.globalProperties.$message = Message// 原型函数
+    // app.config.globalProperties.$confirm = Confirm
   }
 }
