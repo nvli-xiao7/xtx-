@@ -35,7 +35,7 @@
                   <div>
                     <p class="name ellipsis">{{item.name}}</p>
                     <!-- 选择规格组件 -->
-                    <p class="attr">{{item.attrsText}}</p>
+                    <CartSku @change="$event=>updateCartSku(item.skuId,$event)" :attrsText='item.attrsText' :skuId='item.skuId'></CartSku>
                   </div>
                 </div>
               </td>
@@ -47,7 +47,7 @@
                 </p>
               </td>
               <td class="tc">
-                <XtxNumbox :modelValue="item.count" />
+                <XtxNumbox @change="$event=>updateCount(item.skuId,$event)"  :max="item.stock" :modelValue="item.count" />
               </td>
               <td class="tc"><p class="f16 red">&yen;{{item.nowPrice*100*item.count/100}}</p></td>
               <td class="tc">
@@ -61,7 +61,7 @@
           <tbody v-if="$store.getters['cart/invalidList'].length>0">
             <tr><td colspan="6"><h3 class="tit">失效商品</h3></td></tr>
             <tr v-for="item in $store.getters['cart/validList']" :key="item.skuId">
-              <td><XtxCheckbox @change="checkAll($event)" style="color:#eee;" /></td>
+              <td><XtxCheckbox @change="$event=>checkOne(item.skuId,$event)" style="color:#eee;" /></td>
               <td>
                 <div class="goods">
                   <RouterLink :to="`/product/${item.id}`">
@@ -87,10 +87,10 @@
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          <XtxCheckbox :modelValue="$store.getters['cart/isCheckAll']">全选</XtxCheckbox>
-          <a href="javascript:;">删除商品</a>
+          <XtxCheckbox :modelValue="$store.getters['cart/isCheckAll']" @change="checkAll($event)">全选</XtxCheckbox>
+          <a href="javascript:;" @click="batchDeleteCart()">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
-          <a href="javascript:;">清空失效商品</a>
+          <a href="javascript:;" @click="batchDeleteCart(true)">清空失效商品</a>
         </div>
         <div class="total">
           共 {{$store.getters['cart/validTotal']}} 件商品，已选择 {{$store.getters['cart/selectedTotal']}} 件，商品合计：
@@ -106,19 +106,26 @@
 <script>
 import GoodRelevant from '@/views/goods/components/goods-relevant'
 import Message from '@/components/library/Message'
+import Confirm from '@/components/library/Confirm'
 import XtxNumbox from '@/components/library/xtx-numbox.vue'
 import CartNone from './components/cart-none.vue'
 import { useStore } from 'vuex'
+import XtxBread from '@/components/library/xtx-bread.vue'
+import CartSku from './components/cart-sku'
 export default {
   name: 'XtxCartPage',
-  components: { GoodRelevant, XtxNumbox, CartNone },
+  components: { GoodRelevant, XtxNumbox, CartNone, XtxBread, CartSku },
   setup () {
     // 删除
     const store = useStore()
     // 删除
     const deleteCart = (skuId) => {
-      store.dispatch('cart/deleteCart', skuId)
-      Message({ type: 'success', text: '删除成功' })
+      Confirm({ text: '您确定从购物车删除该商品吗？' }).then(() => {
+        store.dispatch('cart/deleteCart', skuId)
+        Message({ type: 'success', text: '删除成功' })
+      }).catch(e => {
+        Message({ text: '删除失败' })
+      })
     }
     // 单选
     const checkOne = (skuId, selected) => {
@@ -128,8 +135,24 @@ export default {
     const checkAll = (selected) => {
       store.dispatch('cart/checkAllCart', selected)
     }
-
-    return { deleteCart, checkOne, checkAll }
+    // 删除全部商品
+    const batchDeleteCart = (type) => {
+      Confirm({ text: `您确定从购物车删除该${type ? '失效' : '选中'}商品吗？` }).then(() => {
+        store.dispatch('cart/batchDeleteCart', type)
+        Message({ type: 'success', text: '删除成功' })
+      }).catch(e => {
+        Message({ text: '删除失败' })
+      })
+    }
+    // 追加件数
+    const updateCount = (skuId, count) => {
+      store.dispatch('cart/updateCart', { skuId, count })
+    }
+    // 修改规格
+    const updateCartSku = (oldSkuId, newSku) => {
+      store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
+    }
+    return { deleteCart, checkOne, checkAll, batchDeleteCart, updateCount, updateCartSku }
   }
 }
 </script>

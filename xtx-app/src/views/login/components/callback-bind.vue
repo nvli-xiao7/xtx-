@@ -39,7 +39,7 @@ import { useIntervalFn } from '@vueuse/core'
 import Message from '@/components/library/Message'
 import { userQQBindCode, userQQBindLogin } from '@/api/user.js'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 export default {
   name: 'CallbackBind',
   components: { Field, Form },
@@ -113,7 +113,7 @@ export default {
     // 立即绑定
     const store = useStore()
     const router = useRouter()
-    const route = useRoute()
+    // const route = useRoute()
     const submit = async () => {
     // 登录的点击事件
     // Form提供的方法validate()，验证通过true，否则false
@@ -122,10 +122,13 @@ export default {
         userQQBindLogin({ unionId: props.unionId, ...form }).then(data => {
           const { id, avatar, nickname, account, mobile, token } = data.result
           store.commit('user/setUser', { id, avatar, nickname, account, mobile, token })
-          // 2. 提示
-          Message({ type: 'success', text: 'QQ绑定成功' })
-          // 跳转路由
-          router.push(route.query.redirectUrl || '/')
+          // 合并购物车操作
+          store.dispatch('cart/mergeCart').then(() => {
+            // 2. 提示
+            Message({ type: 'success', text: '绑定成功' })
+            // 3. 跳转
+            router.push(store.state.user.redirectUrl || '/')
+          })
         }).catch(e => {
           Message({ type: 'error', text: e.response.data.message || 'QQ绑定失败' })
         })

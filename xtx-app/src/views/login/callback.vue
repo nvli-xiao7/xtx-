@@ -34,7 +34,7 @@ import CallbackBind from './components/callback-bind'
 import CallbackPatch from './components/callback-patch'
 import { userQQLogin } from '@/api/user.js'
 import { useStore } from 'vuex'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Message from '@/components/library/Message'
 import QC from 'qc'
 export default {
@@ -49,7 +49,7 @@ export default {
     const unionId = ref(null)
     // 判断是否QQ登录
     const store = useStore()
-    // const router = useRouter()
+    const router = useRouter()
     // const route = useRoute()
     if (QC.Login.check()) {
       QC.Login.getMe((openId) => {
@@ -58,7 +58,13 @@ export default {
           const { id, avatar, nickname, account, mobile, token } = data.result
           store.commit('user/setUser', { id, avatar, nickname, account, mobile, token })
           // 2. 提示
-          Message({ type: 'success', text: 'QQ登录成功' })
+          // 合并购物车操作
+          store.dispatch('cart/mergeCart').then(() => {
+          // 2. 跳转到来源页或者首页
+            router.push(store.state.user.redirectUrl)
+            // 3. 成功提示
+            Message({ type: 'success', text: 'QQ登录成功' })
+          })
           // 跳转路由
           // 2. 跳转到来源页或者首页
           // router.push(store.state.user.redirectUrl || '/')

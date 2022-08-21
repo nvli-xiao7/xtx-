@@ -1,4 +1,5 @@
 <template>
+<!-- 购物车没商品 -->
   <div class="cart-none">
     <img src="@/assets/images/none.png" alt="" />
     <p>购物车内暂时没有商品</p>

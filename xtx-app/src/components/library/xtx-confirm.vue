@@ -1,4 +1,5 @@
 <template>
+<!-- 删除弹出框 -->
   <div class="xtx-confirm" :class="{fade}">
     <div class="wrapper" :class="{fade}">
       <div class="header">
@@ -18,7 +19,7 @@
 </template>
 <script>
 import { onMounted, ref } from 'vue'
-import XtxButton from './xtx-button'
+import XtxButton from './Xtx-button.vue'
 export default {
   name: 'XtxConfirm',
   components: { XtxButton },

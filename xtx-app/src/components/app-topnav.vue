@@ -37,6 +37,7 @@ export default {
     // 退出登录
     const send = () => {
       store.commit('user/setUser', {})
+      store.commit('cart/setCartList', [])
       router.push('/login')
     }
     return { profile, send }

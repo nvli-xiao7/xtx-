@@ -59,7 +59,7 @@ import Message from '@/components/library/Message'
 import schema from '@/utils/vee-validate-schema.js'
 import { userComplement, userRegisterCode } from '@/api/user.js'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 export default {
   name: 'CallbackPatch',
   props: {
@@ -128,7 +128,7 @@ export default {
     // 立即绑定
     const store = useStore()
     const router = useRouter()
-    const route = useRoute()
+    // const route = useRoute()
     const formCom = ref(null)
     const submit = async () => {
       const val = await formCom.value.validate()
@@ -137,10 +137,14 @@ export default {
         userComplement({ unionId: props.unionId, ...form }).then(data => {
           const { id, avatar, nickname, account, mobile, token } = data.result
           store.commit('user/setUser', { id, avatar, nickname, account, mobile, token })
-          // 2. 提示
-          Message({ type: 'success', text: 'QQ绑定成功' })
-          // 跳转路由
-          router.push(route.query.redirectUrl || '/')
+          // 合并购物车操作
+          // 合并购物车操作
+          store.dispatch('cart/mergeCart').then(() => {
+            // 2. 提示
+            Message({ type: 'success', text: '完善信息成功' })
+            // 3. 跳转
+            router.push(store.state.user.redirectUrl || '/')
+          })
         }).catch(e => {
           if (e.response.data.message === 'QQ已绑定,请直接登录') {
             Message({ type: 'success', text: e.response.data.message })

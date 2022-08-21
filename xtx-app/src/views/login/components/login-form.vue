@@ -163,10 +163,18 @@ export default {
         }
         const { id, avatar, nickname, account, mobile, token } = data.result
         store.commit('user/setUser', { id, avatar, nickname, account, mobile, token })
-        // 2. 提示
-        Message({ type: 'success', text: '登录成功' })
-        // 跳转路由
-        router.push(route.query.redirectUrl || '/')
+        // 合并购物车操作
+        // 合并购物车操作
+        store.dispatch('cart/mergeCart').then(() => {
+          // 2. 提示
+          Message({ type: 'success', text: '登录成功' })
+          // 3. 跳转
+          router.push(route.query.redirectUrl || '/')
+        })
+        // // 2. 提示
+        // Message({ type: 'success', text: '登录成功' })
+        // // 跳转路由
+        // router.push(route.query.redirectUrl || '/')
         // }).catch(e => {
         //   Message({ type: 'error', text: e.response.data.message || '登录成功' })
         // })
