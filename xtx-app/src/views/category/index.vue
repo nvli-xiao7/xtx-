@@ -8,7 +8,6 @@
         <XtxBreadItem to="/">首页</XtxBreadItem>
           <XtxBreadItem v-if="currCategory.id">{{currCategory.name}}</XtxBreadItem>
       </XtxBread>
-
       <!-- 轮播图组件 -->
       <XtxCarousel :bannerList="bannerList" autoPlay style="height:500px"></XtxCarousel>
       <!-- 所有二级分类全部分类 -->

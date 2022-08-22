@@ -96,7 +96,6 @@ export default {
       // payload 需要：必需有skuId  可能：selected  count
       return new Promise((resolve, reject) => {
         if (ctx.rootState.user.profile.token) {
-          ctx.commit('updateCart', payload)
           checkCount(payload).then(() => {
             return findCartList()
           }).then(data => {

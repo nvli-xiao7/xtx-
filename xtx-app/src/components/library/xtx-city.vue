@@ -2,8 +2,8 @@
   <!-- 06-商品详情-城市组件-基础地形 -->
   <div class="xtx-city" ref="target">
     <div class="select" @click="toggle()" :class="{ active: show }">
-      <span class="placeholder">{{fullLocation}}</span>
-      <span class="value"></span>
+      <span v-if="!fullLocation" class="placeholder">{{placeholder}}</span>
+      <span v-else class="value">{{fullLocation}}</span>
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div class="option" v-if="show">
@@ -24,6 +24,10 @@ export default {
     fullLocation: {
       type: String,
       default: ''
+    },
+    placeholder: {
+      type: String,
+      default: '请选择配送地址'
     }
   },
   setup (props, { emit }) {

@@ -15,10 +15,11 @@
 import { ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { getSku } from '@/api/cart.js'
+import XtxButton from '@/components/library/Xtx-button.vue'
 import GoodsSku from '@/views/goods/components/goods-sku.vue'
 export default {
   name: 'CartSku',
-  components: { GoodsSku },
+  components: { GoodsSku, XtxButton },
   props: {
     skuId: {
       String: String,
